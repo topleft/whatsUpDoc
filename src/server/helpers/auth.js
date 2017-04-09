@@ -12,11 +12,11 @@ const authHelpers = {
       sub: user.id,
       username: user.username
     };
-    return jwt.sign(playload, process.env.TOKEN_SECRET);
+    return jwt.sign(playload, process.env.WUD_TOKEN_SECRET);
   },
 
   decodeToken(token, cb) {
-    const payload = jwt.verify(token, process.env.TOKEN_SECRET);
+    const payload = jwt.verify(token, process.env.WUD_TOKEN_SECRET);
     const now = moment().unix();
     if (now > payload.exp) cb('Token has expired.');
     else cb(null, payload);

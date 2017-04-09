@@ -51,7 +51,7 @@ $ brew services stop postgresql
 Using the postgreSQL CLI tools, create a database locally:
 
 ```sh
-$ createdb boiler
+$ createdb whats_up_doc
 ```
 
 If you want a different DB name, update the variable `databaseName` in the *knexfile.js*.
@@ -68,6 +68,13 @@ To create the *users* table run:
 
 ```sh
 $ npm run knex migrate:latest
+```
+
+Add a token secret to you environment:
+
+```sh
+
+export WUD_TOKEN_SECRET='createareallyloongrandmonstringandputithere'
 ```
 
 Then fire up the app:

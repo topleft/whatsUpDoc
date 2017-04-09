@@ -1,0 +1,10 @@
+db:
+  image: postgres
+user-service:
+  build: .
+  links:
+  - db
+  environment:
+  - PGHOST=db
+  - PGDATABASE=whats_up_doc
+  - PGUSER=admin

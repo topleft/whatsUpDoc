@@ -1,7 +1,7 @@
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const knex = require('../db/connection');
+const knex = require('../../db/connection');
 
 const authHelpers = {
 

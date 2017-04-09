@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authHelpers = require('../helpers/auth');
-const knex = require('../db/connection');
+const knex = require('../../db/connection');
 
 router.post('/register', (req, res, next)  => {
   authHelpers.createUser(req)

@@ -36,5 +36,5 @@
     "tiny-lr": "^0.2.1",
     "gulp-notify": "^2.2.0"
   },
-  "name": "super-nova-server"
+  "name": "whatUpDoc"
 }

@@ -1,10 +1,30 @@
-db:
-  image: postgres
-user-service:
-  build: .
-  links:
-  - db
-  environment:
-  - PGHOST=db
-  - PGDATABASE=whats_up_doc
-  - PGUSER=admin
+version: '2.1'
+
+services:
+
+  postgres:
+    build: ./src/db/.
+    healthcheck:
+      test: exit 0
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=whats_up_doc
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+
+
+  user-service:
+    build: .
+    ports:
+      - "3030:3030"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    links:
+      - postgres
+    environment:
+      - WUD_DATABASE_URL_DEV=postgres://admin:admin@postgres:5432/whats_up_doc_development
+      - WUD_DATABASE_URL_TEST=postgres://admin:admin@postgres:5432/whats_up_doc_test
+      - NODE_ENV=development
+      - WUD_TOKEN_SECRET=|\x9e\xc2\xdf.\x1d\x15\xa8\xb6]&q\x12\xc0\x1d\x1d\xee\xc2TuEi!\xf4

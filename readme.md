@@ -101,3 +101,9 @@ if (process.env.NODE_ENV === 'test') {
   module.exports = tests;
 }
 ```
+
+
+
+## DOCKERIZE
+
+connect to dockerized db: psql -h localhost -p 5433 -d whats_up_doc -U admin --password admin

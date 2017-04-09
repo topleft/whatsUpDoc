@@ -4,9 +4,11 @@
 
 const knex = require('../../src/server/db/connection');
 const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const chaiHttp = require('chai-http');
 const should = chai.should();
 const expect = chai.expect;
-const chaiHttp = require('chai-http');
+chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 
 const server = require('../../src/server/app');
@@ -27,17 +29,18 @@ const tests = () => {
 
   describe('decodeToken()', () => {
 
-    it('should return a token', (done) => {
+    it('should return a token', () => {
       const token = authHelpers.encodeToken({id: 1, username: 'user123'});
       should.exist(token);
-      const results = authHelpers.decodeToken(token, (err, res) => {
-        should.not.exist(err);
-        res.sub.should.eql(1);
-        res.username.should.eql('user123');
-        done();
-      });
+      return authHelpers.decodeToken(token)
+        .then((result) => {
+          result.sub.should.eql(1);
+          result.username.should.eql('user123');
+        })
+        .catch((err) => {
+          err.should.not.exist;
+        });
     });
-
   });
 
   describe('checkAuthentication()', () => {

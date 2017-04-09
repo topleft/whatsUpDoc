@@ -18,8 +18,16 @@ const authHelpers = {
   decodeToken(token, cb) {
     const payload = jwt.verify(token, process.env.WUD_TOKEN_SECRET);
     const now = moment().unix();
-    if (now > payload.exp) cb('Token has expired.');
-    else cb(null, payload);
+    return new Promise((resolve, reject) => {
+      // what does jwt verify return if token is invalid?
+      if (!payload) {
+        reject('Invalid token.');
+      } else if (payload.exp && now > payload.exp) {
+        reject('Token has expired.');
+      } else {
+        resolve(payload);
+      }
+    });
   },
 
   comparePass(userpass, dbpass) {
@@ -35,33 +43,19 @@ const authHelpers = {
     // decode the token
     var header = req.headers.authorization.split(' ');
     var token = header[1];
-    authHelpers.decodeToken(token, (err, payload) => {
-      if (err) {
-        return res.status(401).json({
-          message: 'Token has expired'
-        });
-      } else {
-        // check if the user still exists in the db
+    authHelpers.decodeToken(token)
+      .then((payload) => {
         return knex('users').where({id: parseInt(payload.sub)}).first()
-        .then((user) => {
-          req.user = {id: user.id};
-          next();
-        })
-        .catch((err) => {
-          res.status(500).json({
-            message: 'User does not exist'
+          .then((user) => {
+            req.user = {id: user.id};
+            next();
           });
+      })
+      .catch((err) => {
+        return res.status(401).json({
+          message: err
         });
-      }
-    });
-  },
-
-  ensureCorrectUser(req,res,next) {
-    if (+req.params.id !== req.user.id) {
-      return res.json({status: 401, message: 'Access Denied'});
-    } else {
-      return next();
-    }
+      });
   },
 
   createUser(req) {

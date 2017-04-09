@@ -57,7 +57,7 @@ gulp.task('jshint', () => {
       esnext: true
     }))
     .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'))
+    .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('jscs', () => {
@@ -66,7 +66,7 @@ gulp.task('jscs', () => {
     .pipe(jscs())
     .pipe(plumber())
     .pipe(jscs.reporter())
-    .pipe(jscs.reporter('fail'))
+    .pipe(jscs.reporter('fail'));
 });
 
 gulp.task('styles', () => {

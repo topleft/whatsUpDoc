@@ -106,4 +106,13 @@ if (process.env.NODE_ENV === 'test') {
 
 ## DOCKERIZE
 
+Steps to recreate:
+
+We are using [docker compose](https://docs.docker.com/compose/) to encapsulate and fire up our micro-services. There is a single _docker-compose.yml_ file in the root of the whole project which defines the relationship between of each of our services and also how to fires them up. It is also necessary to create a _Dockerfile_ within each micro-service to define the micro-service itself (which docker image to use, set and build steps, etc).
+
+NOTE: every build drops the DB.
+
+
+
+
 connect to dockerized db: psql -h localhost -p 5433 -d whats_up_doc -U admin --password admin

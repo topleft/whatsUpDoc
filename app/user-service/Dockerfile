@@ -1,17 +1,19 @@
 # Docker image to use
 FROM node:boron
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# Create app directory and set it as the 'root'
+RUN mkdir -p /src
+WORKDIR /src
 
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+# make command line tools available (ex. knex)
+ENV PATH /src/node_modules/.bin:$PATH
+
 # Install app dependencies
-COPY package.json /usr/src/app/
+ADD package.json /src
 RUN npm install gulp -g
 RUN npm install
 
-COPY . /usr/src/app
+COPY . /src
 
 # map a private port inside the docker image to the port our app is serving up
 EXPOSE 3030

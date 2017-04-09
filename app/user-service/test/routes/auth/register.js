@@ -4,7 +4,7 @@
 
 process.env.NODE_ENV = 'test';
 
-const knex = require('../../../src/db/connection');
+const knex = require('../../../src/connection');
 const chai = require('chai');
 const should = chai.should();
 const expect = chai.expect;

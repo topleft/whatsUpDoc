@@ -59,23 +59,23 @@ const authHelpers = {
       });
   },
 
-  createUser(req) {
-    return handleErrors(req).then(() => {
+  createUser(user) {
+    return handleUserErrors(user).then(() => {
       const salt = bcrypt.genSaltSync();
-      const hash = bcrypt.hashSync(req.body.user.password, salt);
+      const hash = bcrypt.hashSync(user.password, salt);
       return knex('users').insert({
-        username: req.body.user.username,
+        username: user.username,
         password: hash
       }, '*');
     });
   },
 
-  editUser(req) {
-    return handleErrors(req).then(() => {
+  editUser(user, id) {
+    return handleUserErrors(user).then(() => {
       const salt = bcrypt.genSaltSync();
-      const hash = bcrypt.hashSync(req.body.user.password, salt);
-      return knex('users').where({id: req.params.id}).update({
-        username: req.body.user.username,
+      const hash = bcrypt.hashSync(user.password, salt);
+      return knex('users').where({id: id}).update({
+        username: user.username,
         password: hash
       }, '*');
     });
@@ -83,15 +83,15 @@ const authHelpers = {
 
 };
 
-const handleErrors = (req) => {
+const handleUserErrors = (user) => {
   return new Promise((resolve,reject) => {
-    if (req.body.user.username.length < 6) {
+    if (user.username.length < 6) {
       reject({
         err:'username_length',
         message:'Username must be longer than 6 characters'
       });
     }
-    else if (req.body.user.password.length < 6) {
+    else if (user.password.length < 6) {
       reject({
         err:'password_length',
         message:'Password must be longer than 6 characters'

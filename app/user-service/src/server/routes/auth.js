@@ -4,7 +4,7 @@ const authHelpers = require('../helpers/auth');
 const knex = require('../../connection');
 
 router.post('/register', (req, res, next)  => {
-  authHelpers.createUser(req)
+  authHelpers.createUser(req.body.user)
     .then((user) => { return authHelpers.encodeToken(user[0]); })
     .then((token) => {
       res.status(200).json({

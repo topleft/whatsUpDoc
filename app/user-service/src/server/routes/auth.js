@@ -4,13 +4,12 @@ const authHelpers = require('../helpers/auth');
 const knex = require('../../connection');
 
 router.post('/register', (req, res, next)  => {
-  console.log('body in register', req.body);
   authHelpers.createUser(req)
     .then((user) => { return authHelpers.encodeToken(user[0]); })
     .then((token) => {
       res.status(200).json({
         token: token,
-        message: `Success. '${token.username}' has been created.`
+        message: `Success. '${req.body.user.username}' has been created.`
       });
     })
     .catch((err) => {

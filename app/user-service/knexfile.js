@@ -8,7 +8,7 @@ module.exports = {
       directory: path.join(__dirname, '/src', '/migrations')
     },
     seeds: {
-      directory: __dirname + '/seeds'
+      directory: path.join(__dirname, '/src', '/seeds')
     }
   },
   test: {
@@ -18,7 +18,7 @@ module.exports = {
       directory: path.join(__dirname, '/src', '/migrations')
     },
     seeds: {
-      directory: __dirname + '/seeds'
+      directory: path.join(__dirname, '/src', '/seeds')
     }
   }
 };

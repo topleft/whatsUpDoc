@@ -108,11 +108,40 @@ if (process.env.NODE_ENV === 'test') {
 
 Steps to recreate:
 
-We are using [docker compose](https://docs.docker.com/compose/) to encapsulate and fire up our micro-services. There is a single _docker-compose.yml_ file in the root of the whole project which defines the relationship between of each of our services and also how to fires them up. It is also necessary to create a _Dockerfile_ within each micro-service to define the micro-service itself (which docker image to use, set and build steps, etc).
+We are using [docker compose](https://docs.docker.com/compose/) to encapsulate and fire up our micro-services. There is a single _docker-compose.yml_ file in the root of the whole project which defines the relationship between of each of our services and also how to start/build each service. It is necessary to create a _Dockerfile_ within each micro-service to define the micro-service itself (i.e. which docker image to use, set-up and build steps, etc).
+
+The micro-services do not know about each other through the file structure. They have limited interaction on start-up only because of the _docker-compose.yml_ file. This that means that **any interaction** between them after start-up must be made by network calls (in our case HTTP).
 
 NOTE: every build drops the DB.
 
 
+Database:
+
+The database is created because a call to create.sql, which we wrote and placed into the _db/_ folder (micro-service). This call is made because it is specified in the _Dockerfile_ of the database micro-service.
+
+run the knex database migrations, from within _user-service/_:
+
+```sh
+docker-compose run user-service knex migrate:latest --env development --knexfile ./knexfile.js
+```
+
+connect to dockerized db:
+
+```sh
+psql -h localhost -p 5433 -d whats_up_doc_development -U admin
+```
 
 
-connect to dockerized db: psql -h localhost -p 5433 -d whats_up_doc -U admin --password admin
+TODOs:
+
+- get gulp live reload happening so that we don't have to rebuild the project with every code change
+- set up another node app that does something trivial to test authentication
+ - the idea is that once authenticated through the user-service other services will accept the same token to allow access
+ - idea for 'something trivial': pokemon api, gihub api, nytimes api?
+ - have this service also hit postgres to prove sharing of data
+- implement a static service to serve up client side that hits all services allowing interaction by user
+ - build in Angular
+ - use webpack
+- implement meteor todo app
+ - that will accept the token to allow access
+ - use the postgress db for something internally

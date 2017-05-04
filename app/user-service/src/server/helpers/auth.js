@@ -60,13 +60,19 @@ const authHelpers = {
   },
 
   createUser(user) {
-    return handleUserErrors(user).then(() => {
-      const salt = bcrypt.genSaltSync();
-      const hash = bcrypt.hashSync(user.password, salt);
-      return knex('users').insert({
-        username: user.username,
-        password: hash
-      }, '*');
+    return new Promise((resolve, reject) => {
+      handleUserErrors(user)
+        .then(() => {
+          const salt = bcrypt.genSaltSync();
+          const hash = bcrypt.hashSync(user.password, salt);
+          knex('users').insert({
+            username: user.username,
+            password: hash
+          }, '*')
+            .then(resolve)
+            .catch(reject);
+        })
+        .catch(reject);
     });
   },
 
@@ -90,14 +96,12 @@ const handleUserErrors = (user) => {
         err:'username_length',
         message:'Username must be longer than 6 characters'
       });
-    }
-    else if (user.password.length < 6) {
+    } else if (user.password.length < 6) {
       reject({
         err:'password_length',
         message:'Password must be longer than 6 characters'
       });
-    }
-    else {
+    } else {
       resolve();
     }
   });

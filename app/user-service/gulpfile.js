@@ -10,9 +10,12 @@ const plumber = require('gulp-plumber');
 const server = require('tiny-lr')();
 // *** config *** //
 
+console.log('path', path.join('src', 'server', 'server.js'));
+
 const paths = {
   scripts: [
     path.join('src', '**', '*.js'),
+    path.join('src', '**', '**', '*.js'),
     path.join('src', '*.js')
   ],
   styles: [

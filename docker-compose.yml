@@ -3,6 +3,7 @@ version: '2.1'
 services:
 
   postgres:
+    container_name: whats_up_doc_db
     build: ./app/db
     healthcheck:
       test: exit 0
@@ -15,9 +16,13 @@ services:
 
 
   user-service:
+    container_name: user-service
     build: ./app/user-service
     ports:
       - "3030:3030"
+    volumes:
+      - './app/user-service:/src/app'
+      - './app/user-service/package.json:/src/package.json'
     depends_on:
       postgres:
         condition: service_healthy
@@ -26,5 +31,5 @@ services:
     environment:
       - WUD_DATABASE_URL_DEV=postgres://admin:admin@postgres:5432/whats_up_doc_development
       - WUD_DATABASE_URL_TEST=postgres://admin:admin@postgres:5432/whats_up_doc_test
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV}
       - WUD_TOKEN_SECRET=|\x9e\xc2\xdf.\x1d\x15\xa8\xb6]&q\x12\xc0\x1d\x1d\xee\xc2TuEi!\xf4

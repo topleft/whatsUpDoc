@@ -7,6 +7,7 @@ router.post('/register', (req, res, next)  => {
   authHelpers.createUser(req.body.user)
     .then((user) => { return authHelpers.encodeToken(user[0]); })
     .then((token) => {
+      console.log('live reload???');
       res.status(200).json({
         token: token,
         message: `Success. '${req.body.user.username}' has been created.`

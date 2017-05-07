@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "knex": "knex",
-    "start": "node ./src/server/server",
+    "start": "gulp --gulpfile app/gulpfile.js",
     "test": "NODE_ENV='test' ./node_modules/mocha/bin/_mocha"
   },
   "dependencies": {

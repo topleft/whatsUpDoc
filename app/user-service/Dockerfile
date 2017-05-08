@@ -14,7 +14,7 @@ RUN npm install
 
 # map a private port inside the docker image to the port our app is serving up
 EXPOSE 3030
-# expose the port for the nodemon live reload (this is the port specified in the gulp file where nodemon is listing)
+# expose the port for the nodemon live reload (this is the port specified in the gulp file where nodemon is listening)
 EXPOSE 35729
 
 # set the environment variables

@@ -1,3 +1,79 @@
+## DOCKERIZE
+
+Steps to recreate:
+
+We are using [docker compose](https://docs.docker.com/compose/) to encapsulate and fire up our micro-services. There is a single _docker-compose.yml_ file in the root of the whole project which defines the relationship between of each of our services and also how to start/build each service. It is necessary to create a _Dockerfile_ within each micro-service to define the micro-service itself (i.e. which docker image to use, set-up and build steps, etc).
+
+The micro-services do not know about each other through the file structure. They have limited interaction on start-up only because of the _docker-compose.yml_ file.
+
+Database:
+
+The database is created because a call to create.sql, which we wrote and placed into the _db/_ folder (micro-service). This call is made because it is specified in the _Dockerfile_ of the database micro-service.
+
+run the knex database migrations, from within _app/_:
+
+```sh
+sh migrate.sh
+```
+
+The distributed system:
+
+Build and launch, in _app/_ run:
+
+```sh
+docker-compose up --build -d user-service
+```
+> `-d` runs the containers in the background
+
+Want to see logs of all containers? `docker-compose logs`
+Want to see logs of a specific container? `docker-compose logs <container-name>`
+Want to keep them running? add a `-f`
+
+#### Test it out
+In Postman hit `http://localhost:3030/auth/register` with a "raw" body of type JSON posting this object:
+```
+{
+  "user":
+    {
+      "username": topleft",
+      "password": "topleft"
+    }
+}
+```
+
+If all is working you will get back a token and a success message.
+
+A note about docker container file structure:
+
+When docker builds the container it creates an _app/_ directory and puts your working directory within that. So in your _docker-compose.yml_, when specifying volumes, be sure to use the _app/_ as the root of the path.
+
+If you need to connect to the dockerized db:
+
+```sh
+psql -h localhost -p 5433 -d whats_up_doc_development -U admin
+```
+
+Run the tests:
+
+```sh
+docker-compose run user-service npm test
+```
+
+TODOs:
+
+- CHECK get gulp live reload happening so that we don't have to rebuild the project with every code change
+- set up another node app that does something trivial to test authentication
+ - the idea is that once authenticated through the user-service other services will accept the same token to allow access
+ - idea for 'something trivial': pokemon api, gihub api, nytimes api?
+ - have this service also hit postgres to prove sharing of data
+- implement a static service to serve up client side that hits all services allowing interaction by user
+ - build in Angular
+ - use webpack
+- implement meteor todo app
+ - that will accept the token to allow access
+ - use the postgress db for something internally
+
+
 ## Fire It Up (but do the setup first)
 
 ```sh

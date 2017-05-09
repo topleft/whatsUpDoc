@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "knex": "knex",
-    "start": "node ./src/server/server",
-    "test": "NODE_ENV='test' ./node_modules/mocha/bin/_mocha"
+    "start": "gulp --gulpfile app/gulpfile.js",
+    "test": "'./node_modules/mocha/bin/_mocha' '/src/app/test/runner.test.js'"
   },
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "body-parser": "~1.15.1",
+    "chai-as-promised": "^6.0.0",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-alpha.2",
     "debug": "~2.2.0",
@@ -36,5 +37,5 @@
     "tiny-lr": "^0.2.1",
     "gulp-notify": "^2.2.0"
   },
-  "name": "super-nova-server"
+  "name": "whatUpDoc"
 }

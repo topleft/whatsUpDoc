@@ -7,13 +7,15 @@ const jscs = require('gulp-jscs');
 const runSequence = require('run-sequence');
 const nodemon = require('gulp-nodemon');
 const plumber = require('gulp-plumber');
-const notify = require('gulp-notify');
 const server = require('tiny-lr')();
 // *** config *** //
+
+console.log('path', path.join('src', 'server', 'server.js'));
 
 const paths = {
   scripts: [
     path.join('src', '**', '*.js'),
+    path.join('src', '**', '**', '*.js'),
     path.join('src', '*.js')
   ],
   styles: [
@@ -58,10 +60,7 @@ gulp.task('jshint', () => {
       esnext: true
     }))
     .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'))
-    .pipe(notify({
-      message: 'jshint done'
-    }));
+    .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('jscs', () => {
@@ -70,10 +69,7 @@ gulp.task('jscs', () => {
     .pipe(jscs())
     .pipe(plumber())
     .pipe(jscs.reporter())
-    .pipe(jscs.reporter('fail'))
-    .pipe(notify({
-      message: 'jscs done'
-    }));
+    .pipe(jscs.reporter('fail'));
 });
 
 gulp.task('styles', () => {

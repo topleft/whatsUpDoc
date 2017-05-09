@@ -1,7 +1,7 @@
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const knex = require('../db/connection');
+const knex = require('../../connection');
 
 const authHelpers = {
 
@@ -59,23 +59,29 @@ const authHelpers = {
       });
   },
 
-  createUser(req) {
-    return handleErrors(req).then(() => {
-      const salt = bcrypt.genSaltSync();
-      const hash = bcrypt.hashSync(req.body.user.password, salt);
-      return knex('users').insert({
-        username: req.body.user.username,
-        password: hash
-      }, '*');
+  createUser(user) {
+    return new Promise((resolve, reject) => {
+      handleUserErrors(user)
+        .then(() => {
+          const salt = bcrypt.genSaltSync();
+          const hash = bcrypt.hashSync(user.password, salt);
+          knex('users').insert({
+            username: user.username,
+            password: hash
+          }, '*')
+            .then(resolve)
+            .catch(reject);
+        })
+        .catch(reject);
     });
   },
 
-  editUser(req) {
-    return handleErrors(req).then(() => {
+  editUser(user, id) {
+    return handleUserErrors(user).then(() => {
       const salt = bcrypt.genSaltSync();
-      const hash = bcrypt.hashSync(req.body.user.password, salt);
-      return knex('users').where({id: req.params.id}).update({
-        username: req.body.user.username,
+      const hash = bcrypt.hashSync(user.password, salt);
+      return knex('users').where({id: id}).update({
+        username: user.username,
         password: hash
       }, '*');
     });
@@ -83,21 +89,19 @@ const authHelpers = {
 
 };
 
-const handleErrors = (req) => {
+const handleUserErrors = (user) => {
   return new Promise((resolve,reject) => {
-    if (req.body.user.username.length < 6) {
+    if (user.username.length < 6) {
       reject({
         err:'username_length',
         message:'Username must be longer than 6 characters'
       });
-    }
-    else if (req.body.user.password.length < 6) {
+    } else if (user.password.length < 6) {
       reject({
         err:'password_length',
         message:'Password must be longer than 6 characters'
       });
-    }
-    else {
+    } else {
       resolve();
     }
   });

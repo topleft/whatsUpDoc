@@ -3,9 +3,7 @@ const authHelpers = require('./helpers/auth');
 
 const testRunner = Promise.resolve();
 
-testRunner.then(() => {
 
-  authRoutes();
-  authHelpers();
-
-});
+console.log('in the tests', process.cwd());
+authRoutes();
+authHelpers();

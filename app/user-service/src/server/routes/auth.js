@@ -1,19 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const authHelpers = require('../helpers/auth');
-const knex = require('../db/connection');
+const knex = require('../../connection');
 
 router.post('/register', (req, res, next)  => {
-  authHelpers.createUser(req)
+  authHelpers.createUser(req.body.user)
     .then((user) => { return authHelpers.encodeToken(user[0]); })
     .then((token) => {
+      console.log('live reload???');
       res.status(200).json({
         token: token,
-        message: `Success. '${token.username}' has been created.`
+        message: `Success. '${req.body.user.username}' has been created.`
       });
     })
     .catch((err) => {
       if (err) {
+        console.log('err in register', err);
         res.status(400).json(err);
       } else {
         res.status(400).json({message: 'Regsitration failed'});

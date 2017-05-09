@@ -2,20 +2,22 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/server/server",
-    "test": "./node_modules/mocha/bin/_mocha"
+    "start": "gulp --gulpfile app/gulpfile.js",
+    "test": "'./node_modules/mocha/bin/_mocha' '/src/app/test/runner.test.js'"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "~1.15.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
-    "dotenv": "^2.0.0",
     "express": "~4.13.4",
     "express-session": "^1.14.0",
-    "morgan": "~1.7.0",
-    "nunjucks": "^2.4.2",
+    "gulp": "^3.9.1",
+    "jsonwebtoken": "^7.4.0",
     "knex": "^0.11.10",
+    "moment": "^2.18.1",
+    "morgan": "~1.7.0",
     "pg": "6.1.0"
   },
   "devDependencies": {

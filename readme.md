@@ -53,6 +53,12 @@ If you need to connect to the dockerized db:
 psql -h localhost -p 5433 -d whats_up_doc_development -U admin
 ```
 
+Run the tests:
+
+```sh
+docker-compose run user-service npm test
+```
+
 TODOs:
 
 - CHECK get gulp live reload happening so that we don't have to rebuild the project with every code change

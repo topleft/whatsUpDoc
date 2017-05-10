@@ -10,7 +10,7 @@ Database:
 
 The database is created because a call to create.sql, which we wrote and placed into the _db/_ folder (micro-service). This call is made because it is specified in the _Dockerfile_ of the database micro-service.
 
-run the knex database migrations, from within _app/_:
+run the knex database migrations, in the command line from within _app/_:
 
 ```sh
 sh migrate.sh
@@ -18,12 +18,13 @@ sh migrate.sh
 
 The distributed system:
 
-Build and launch, in _app/_ run:
+Build and launch, in the root directory run:
 
 ```sh
-docker-compose up --build -d user-service
+docker-compose up --build -d
 ```
 > `-d` runs the containers in the background
+> `--build` will build any containers that has not been built yet
 
 Want to see logs of all containers? `docker-compose logs`
 Want to see logs of a specific container? `docker-compose logs <container-name>`
@@ -43,6 +44,10 @@ In Postman hit `http://localhost:3030/auth/register` with a "raw" body of type J
 
 If all is working you will get back a token and a success message.
 
+Now, take that token and use hit `localhost:3031/todo-service/check_authentication`. If using Postman:
+
+![Check Auth in Postman](./readme-images/postman-todo-service-check-auth.png)
+
 A note about docker container file structure:
 
 When docker builds the container it creates an _app/_ directory and puts your working directory within that. So in your _docker-compose.yml_, when specifying volumes, be sure to use the _app/_ as the root of the path.
@@ -61,15 +66,29 @@ docker-compose run user-service npm test
 
 TODOs:
 
-- CHECK get gulp live reload happening so that we don't have to rebuild the project with every code change
-- set up another node app that does something trivial to test authentication
- - the idea is that once authenticated through the user-service other services will accept the same token to allow access
- - idea for 'something trivial': pokemon api, gihub api, nytimes api?
- - have this service also hit postgres to prove sharing of data
+- ~~get gulp live reload happening so that we don't have to rebuild the project with every code change~~
+- ~~set up another node app that does something trivial to test authentication~~
+ - ~~the idea is that once authenticated through the user-service other services will accept the same token to allow access~~
+- make a todo crud hitting the same db as users are stored in
+ - GET
+   - seed
+   - tests
+   - routes
+ - POST
+   - tests
+   - routes
+ - PUT
+   - tests
+   - routes
+ - DELETE
+   - tests
+   - routes
+
+- make another service that hits an api: pokemon api, gihub api, nytimes api?
 - implement a static service to serve up client side that hits all services allowing interaction by user
  - build in Angular
  - use webpack
-- implement meteor todo app
+- implement flask app
  - that will accept the token to allow access
  - use the postgress db for something internally
 

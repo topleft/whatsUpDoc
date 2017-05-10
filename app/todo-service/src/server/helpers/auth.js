@@ -8,6 +8,7 @@ const knex = require('../db/connection');
 const decodeToken = (token) => {
   // is jwt verify async?
   const payload = jwt.verify(token, process.env.WUD_TOKEN_SECRET);
+  console.log('jwt payload', payload);
   const now = moment().unix();
   return new Promise((resolve, reject) => {
     // TODO what does jwt verify return if token is invalid?
@@ -34,7 +35,10 @@ const checkAuthentication = (req, res, next) => {
     .then((payload) => {
       return knex('users').where({id: parseInt(payload.sub)}).first()
         .then((user) => {
-          req.user = {id: user.id};
+          req.user = {
+            id: user.id,
+            username: user.username
+          };
           next();
         });
     })

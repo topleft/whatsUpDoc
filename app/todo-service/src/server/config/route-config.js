@@ -5,10 +5,10 @@
   routeConfig.init = function (app) {
 
     // *** routes *** //
-    const routes = require('../routes/index');
+    const authRoutes = require('../routes/auth');
 
     // *** register routes *** //
-    app.use('/todo-service', routes);
+    app.use('/todo-service', authRoutes);
 
   };
 

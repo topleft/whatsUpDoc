@@ -23,7 +23,7 @@ const tests = () => {
       });
 
       afterEach((done) => {
-        knex('users').del().then(() => {
+        knex('Users').del().then(() => {
           done();
         });
       });
@@ -65,7 +65,7 @@ const tests = () => {
       });
 
       after((done) => {
-        knex('users').del().then(() => {
+        knex('Users').del().then(() => {
           done();
         });
       });
@@ -76,7 +76,7 @@ const tests = () => {
       });
 
       it('should create a new user', (done) => {
-        knex('users').then((users) => {
+        knex('Users').then((users) => {
           users.length.should.equal(1);
           users[0].username.should.equal('user123');
           expect(users[0].id).to.exist;

@@ -25,7 +25,7 @@ router.post('/register', (req, res, next)  => {
 router.post('/login', (req, res, next) => {
   const username = req.body.user.username;
   const password = req.body.user.password;
-  return knex('users').where({username}).first()
+  return knex('Users').where({username}).first()
   .then((user) => {
     authHelpers.comparePass(password, user.password);
     return user;
@@ -45,7 +45,7 @@ router.post('/login', (req, res, next) => {
 // ** helper routes ** //
 
 router.get('/current_user', authHelpers.checkAuthentication, (req,res) => {
-  knex('users').where({id: parseInt(req.user.id)}).first()
+  knex('Users').where({id: parseInt(req.user.id)}).first()
   .then((user) => {
     let result = Object.assign({}, user);
     delete result.password;

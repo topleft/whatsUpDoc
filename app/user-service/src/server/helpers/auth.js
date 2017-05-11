@@ -46,7 +46,7 @@ const authHelpers = {
     var token = header[1];
     authHelpers.decodeToken(token)
       .then((payload) => {
-        return knex('users').where({id: parseInt(payload.sub)}).first()
+        return knex('Users').where({id: parseInt(payload.sub)}).first()
           .then((user) => {
             req.user = {id: user.id};
             next();
@@ -65,7 +65,7 @@ const authHelpers = {
         .then(() => {
           const salt = bcrypt.genSaltSync();
           const hash = bcrypt.hashSync(user.password, salt);
-          knex('users').insert({
+          knex('Users').insert({
             username: user.username,
             password: hash
           }, '*')
@@ -80,7 +80,7 @@ const authHelpers = {
     return handleUserErrors(user).then(() => {
       const salt = bcrypt.genSaltSync();
       const hash = bcrypt.hashSync(user.password, salt);
-      return knex('users').where({id: id}).update({
+      return knex('Users').where({id: id}).update({
         username: user.username,
         password: hash
       }, '*');

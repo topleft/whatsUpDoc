@@ -58,7 +58,7 @@ const tests = () => {
       });
 
       after((done) => {
-        knex('users').del().then(() => {
+        knex('Users').del().then(() => {
           done();
         });
       });

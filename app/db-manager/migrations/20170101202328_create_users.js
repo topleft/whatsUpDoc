@@ -1,6 +1,6 @@
 
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('users', (table) => {
+  return knex.schema.createTable('Users', (table) => {
     table.increments();
     table.string('username').unique().notNullable();
     table.specificType('password', 'char(60)').notNullable();
@@ -9,5 +9,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('users');
+  return knex.schema.dropTable('Users');
 };

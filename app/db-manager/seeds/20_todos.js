@@ -1,7 +1,5 @@
 'use-strict';
 
-const knex = require('../server/db/connection');
-
 const todos = [
   {
     user_id: 1,
@@ -20,8 +18,9 @@ const todos = [
   }
 ]
 
-knex('todos').del()
-  .then(() => {
-    return knex('todos').insert(todos);
-  })
-  .catch(console.err)
+exports.seed = (knex, Promise) => {
+  return knex('Todos').del()
+    .then(() => {
+      return knex('Todos').insert(todos);
+    })
+}

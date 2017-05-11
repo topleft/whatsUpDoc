@@ -15,6 +15,25 @@ services:
       - POSTGRES_PASSWORD=admin
 
 
+  db-manager:
+    container_name: db-manager
+    build: ./app/db-manager
+    ports:
+      - "3032:3032"
+    volumes:
+      - './app/db-manager:/src/app'
+      - './app/db-manager/package.json:/src/package.json'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    links:
+      - postgres
+    environment:
+      - WUD_DATABASE_URL_DEV=postgres://admin:admin@postgres:5432/whats_up_doc_development
+      - WUD_DATABASE_URL_TEST=postgres://admin:admin@postgres:5432/whats_up_doc_test
+      - NODE_ENV=${NODE_ENV}
+      - WUD_TOKEN_SECRET=|\x9e\xc2\xdf.\x1d\x15\xa8\xb6]&q\x12\xc0\x1d\x1d\xee\xc2TuEi!\xf4
+
   user-service:
     container_name: user-service
     build: ./app/user-service

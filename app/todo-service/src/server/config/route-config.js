@@ -6,9 +6,11 @@
 
     // *** routes *** //
     const authRoutes = require('../routes/auth');
+    const todosRoutes = require('../routes/todos');
 
     // *** register routes *** //
     app.use('/todo-service', authRoutes);
+    app.use('/todo-service', todosRoutes);
 
   };
 
